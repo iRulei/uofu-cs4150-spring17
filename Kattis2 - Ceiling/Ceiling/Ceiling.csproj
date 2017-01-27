@@ -49,6 +49,13 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="01_50-6.txt" />
+    <Content Include="02_100-3.txt" />
+    <Content Include="03_20-5.txt" />
+    <Content Include="04_100-10.txt" />
+    <Content Include="05_10_100.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

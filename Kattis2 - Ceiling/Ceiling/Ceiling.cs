@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,85 +11,105 @@ namespace Ceiling
     {
         static void Main(string[] args)
         {
-            //List<Ctree> trees = new List<Ctree>();
-            //string ct;
-            //int n, k;
 
-            //ct = Console.ReadLine();
-            //n = ct[0];
-            //k = ct[2];
+            List<Ctree> trees = new List<Ctree>();
+            HashSet<Ctree> shadows = new HashSet<Ctree>();
 
-            //while ((ct = Console.ReadLine()) != null)
+            string line = Console.ReadLine();
+            string[] first = line.Split(' ');
+            int k = Int32.Parse(first[1]);
+
+            while ((line = Console.ReadLine()) != null)
+            {
+                trees.Add(new Ceiling.Ctree(k, line));
+            }
+
+            //string[] lines = File.ReadAllLines("04_100-10.txt");
+            //string[] first = lines[0].Split(' ');
+            //int k = Int32.Parse(first[1]);
+
+            //for (int i = 1; i < lines.Length; i++)
             //{
-            //    trees.Add(new Ceiling.Ctree(k, ct));
+            //    trees.Add(new Ctree(k, lines[i]));
             //}
 
-            Ctree ct = new Ctree("1 2 3 4 5 6 7 8 9");
-            Console.Out.WriteLine(ct.ToString());
+            foreach (Ctree ct in trees)
+            {
+                shadows.Add(ct);
+            }
+
+            Console.Out.WriteLine(shadows.Count);
             Console.Read();
         }
 
         class Ctree
         {
-            private char[] tArray;
-            public bool[] tShape;
+            private int[] tree;
+            public bool[] shadow;
             private int leafCount;
+            private int treeSize;
 
-            public Ctree(string leaves)
+            public Ctree(int inLC, string leafString)
             {
-                leafCount = (leaves.Length + 1) / 2;
+                leafCount = inLC;
+                treeSize = (int)Math.Pow(2, leafCount) + 1;
+                int[] leaves = GetLeaves(leafCount, leafString);
 
-                tArray = new char[(int)Math.Pow(2, leafCount) + 1];
-                tShape = new bool[(int)Math.Pow(2, leafCount) + 1];
+                tree = new int[treeSize];
+                shadow = new bool[treeSize];
 
-                tArray[1] = leaves[0];
-                tShape[1] = true;
+                tree[1] = leaves[0];
+                shadow[1] = true;
 
-                for (int l = 2; l < leaves.Length; l += 2)
+                for (int l = 1; l < leafCount; l ++)
                 {
                     int i = 1;
 
                     while (true)
                     {
-                        if (leaves[l] < tArray[i])
+                        if (leaves[l] < tree[i])
                         {
-                            if (tShape[2 * i])
+                            if (shadow[2 * i])
                             {
                                 i = 2 * i;
                             }
                             else
                             {
-                                tArray[2 * i] = leaves[l];
-                                tShape[2 * i] = true;
+                                tree[2 * i] = leaves[l];
+                                shadow[2 * i] = true;
                                 break;
                             }
                         }
-                        else if (leaves[l] > tArray[i])
+                        else if (leaves[l] > tree[i])
                         {
-                            if (tShape[2 * i + 1])
+                            if (shadow[2 * i + 1])
                             {
                                 i = 2 * i + 1;
                             }
                             else
                             {
-                                tArray[2 * i + 1] = leaves[l];
-                                tShape[2 * i + 1] = true;
+                                tree[2 * i + 1] = leaves[l];
+                                shadow[2 * i + 1] = true;
                                 break;
                             }
+                        }
+                        else
+                        {
+                            break;
                         }
                     }
                 }
             }
 
-            public override string ToString()
+            public string PrintShadow()
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("[");
-                for(int i = 0; i < (int)Math.Pow(2, leafCount) + 1; i++)
+                for (int i = 0; i < (int)Math.Pow(2, leafCount) + 1; i++)
                 {
-                    if (tShape[i])
+                    if (shadow[i])
                     {
-                        sb.Append(tArray[i]);
+                        sb.Append("x");
                     }
                     else
                     {
@@ -98,13 +119,46 @@ namespace Ceiling
                 }
                 sb.Remove(sb.Length - 1, 1);
                 sb.Append("]\n ");
-                for(int i = 0; i < (int)Math.Pow(2, leafCount) + 1; i++)
+                for (int i = 0; i < (int)Math.Pow(2, leafCount) + 1; i++)
                 {
                     sb.Append(i + " ");
                 }
                 return sb.ToString();
             }
 
+            private int[] GetLeaves(int leafCount, string leafString)
+            {
+                int[] leafArray = new int[leafCount];
+                string[] nums = leafString.Split();
+
+                for (int i = 0; i < leafCount; i++)
+                {
+                    leafArray[i] = Int32.Parse(nums[i]);
+                }
+
+                return leafArray;
+            }
+
+            public override bool Equals(object obj)
+            {
+                Ctree other = (Ctree)obj;
+                return shadow.SequenceEqual(other.shadow);
+            }
+
+            public override int GetHashCode()
+            {
+                int hash = 0;
+
+                for (int i = 0; i < treeSize; i++)
+                {
+                    if (shadow[i])
+                    {
+                        hash += (int)Math.Pow(10, i);
+                    }
+                }
+
+                return hash;
+            }
         }
     }
 }
