@@ -15,23 +15,23 @@ namespace Ceiling
             List<Ctree> trees = new List<Ctree>();
             HashSet<Ctree> shadows = new HashSet<Ctree>();
 
-            string line = Console.ReadLine();
-            string[] first = line.Split(' ');
-            int k = Int32.Parse(first[1]);
-
-            while ((line = Console.ReadLine()) != null)
-            {
-                trees.Add(new Ceiling.Ctree(k, line));
-            }
-
-            //string[] lines = File.ReadAllLines("04_100-10.txt");
-            //string[] first = lines[0].Split(' ');
+            //string line = Console.ReadLine();
+            //string[] first = line.Split(' ');
             //int k = Int32.Parse(first[1]);
 
-            //for (int i = 1; i < lines.Length; i++)
+            //while ((line = Console.ReadLine()) != null)
             //{
-            //    trees.Add(new Ctree(k, lines[i]));
+            //    trees.Add(new Ceiling.Ctree(k, line));
             //}
+
+            string[] lines = File.ReadAllLines("04_100-10.txt");
+            string[] first = lines[0].Split(' ');
+            int k = Int32.Parse(first[1]);
+
+            for (int i = 1; i < lines.Length; i++)
+            {
+                trees.Add(new Ctree(k, lines[i]));
+            }
 
             foreach (Ctree ct in trees)
             {
@@ -46,6 +46,7 @@ namespace Ceiling
         {
             private int[] tree;
             public bool[] shadow;
+            private int hash = 0;
             private int leafCount;
             private int treeSize;
 
@@ -77,6 +78,7 @@ namespace Ceiling
                             {
                                 tree[2 * i] = leaves[l];
                                 shadow[2 * i] = true;
+                                hash += (int)Math.Pow(10, 2 * i);
                                 break;
                             }
                         }
@@ -90,6 +92,7 @@ namespace Ceiling
                             {
                                 tree[2 * i + 1] = leaves[l];
                                 shadow[2 * i + 1] = true;
+                                hash += (int)Math.Pow(10, 2 * i + 1);
                                 break;
                             }
                         }
@@ -147,16 +150,6 @@ namespace Ceiling
 
             public override int GetHashCode()
             {
-                int hash = 0;
-
-                for (int i = 0; i < treeSize; i++)
-                {
-                    if (shadow[i])
-                    {
-                        hash += (int)Math.Pow(10, i);
-                    }
-                }
-
                 return hash;
             }
         }
