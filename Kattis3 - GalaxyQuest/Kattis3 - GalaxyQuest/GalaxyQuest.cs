@@ -34,6 +34,12 @@ namespace GalaxyQuest
             Stack<Star> candidates = new Stack<Star>();
             while(true)
             {
+                if(candidates.Count == 0 && universe.Count == 1)
+                {
+                    candidates = universe;
+                    break;
+                }
+
                 if(universe.Peek() != null)
                 {
                     Star s = universe.Pop();
