@@ -34,6 +34,12 @@ namespace GalaxyQuest
                 lc++;
             }
 
+            foreach(Star s in universe)
+            {
+                s.PrintCoords();
+            }
+            Console.ReadLine();
+
             // do the majority element algorithm
             List<Star> candidates = new List<Star>();
             bool found = false;
@@ -61,7 +67,7 @@ namespace GalaxyQuest
 
             foreach (Star s in candidates)
             {
-
+                s.PrintCoords();
             }
 
             Console.Read();
