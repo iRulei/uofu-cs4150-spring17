@@ -12,7 +12,7 @@ namespace GalaxyQuest
         static void Main(string[] args)
         {
             // get all the stars
-            Star[] universe = new Star[0];
+            List<Star> universe = new List<Star>();
             int lc = 0;
             int d = 0;
             int sc = 0;
@@ -35,9 +35,15 @@ namespace GalaxyQuest
             }
 
             // do the majority element algorithm
-            Star[] candidates = new Star[sc];
+            List<Star> candidates = new List<Star>();
 
-            for
+            for (int i = 0; i < sc; i++)
+            {
+                if (universe[i].Equals(universe[i+1]))
+                {
+                    
+                }
+            }
 
             Console.Out.WriteLine();
             Console.Read();
