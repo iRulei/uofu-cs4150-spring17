@@ -32,15 +32,24 @@ namespace GalaxyQuest
 
             // do the majority element algorithm
             Stack<Star> candidates = new Stack<Star>();
-
-            while(universe.Peek() != null)
+            while(true)
             {
-                Star s = universe.Pop();
-                if (universe.Peek() == null || s.Equals(universe.Pop()))
+                if(universe.Peek() != null)
                 {
-                    candidates.Push(s);
+                    Star s = universe.Pop();
+                    if (universe.Peek() == null || s.Equals(universe.Pop()))
+                    {
+                        candidates.Push(s);
+                    }
+                }
+                else
+                {
+                    universe = candidates;
+                    candidates = new Stack<Star>();
                 }
             }
+
+            candidates.Peek().PrintCoords();
 
             Console.Out.WriteLine();
             Console.Read();
