@@ -12,9 +12,10 @@ namespace GalaxyQuest
         static void Main(string[] args)
         {
             // get all the stars
-            Stack<Star> universe = new Stack<Star>();
+            Star[] universe = new Star[0];
             int lc = 0;
             int d = 0;
+            int sc = 0;
             foreach (string line in File.ReadLines("k3test1.txt"))
             //string line = "";
             //while ((line = Console.ReadLine()) != null)
@@ -23,39 +24,41 @@ namespace GalaxyQuest
                 {
                     string[] info = line.Split(' ');
                     d = Int32.Parse(info[0]);
+                    sc = Int32.Parse(info[1]);
+                    universe = new Star[sc];
                     lc++;
                     continue;
                 }
                 string[] coords = line.Split(' ');
-                universe.Push(new Star(Int32.Parse(coords[0]), Int32.Parse(coords[1]), d));
+                universe[lc - 1] = new Star(Int32.Parse(coords[0]), Int32.Parse(coords[1]), d);
+                lc++;
             }
 
             // do the majority element algorithm
-            Stack<Star> candidates = new Stack<Star>();
-            while(true)
+            List<Star> candidates;
+            bool found = false;
+            while(!found)
             {
-                if(candidates.Count == 0 && universe.Count == 1)
+                candidates = new List<Star>();
+                for(int i = 0; i < universe.Length; i+=2)
                 {
-                    candidates = universe;
-                    break;
-                }
-
-                if(universe.Peek() != null)
-                {
-                    Star s = universe.Pop();
-                    if (universe.Peek() == null || s.Equals(universe.Pop()))
+                    if(candidates.Count == 0 && universe.Length == 1)
                     {
-                        candidates.Push(s);
+                        candidates = new List<Star>(universe);
+                        break;
                     }
-                }
-                else
-                {
-                    universe = candidates;
-                    candidates = new Stack<Star>();
-                }
-            }
 
-            candidates.Peek().PrintCoords();
+                    if(universe[i].Equals(universe[i+1]))
+                    {
+
+                    }
+                    
+                }
+                universe = candidates.ToArray();
+                
+                if (candidates.Count == 1)
+                    found = true;
+            }
 
             Console.Out.WriteLine();
             Console.Read();
