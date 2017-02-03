@@ -35,22 +35,21 @@ namespace GalaxyQuest
             }
 
             // do the majority element algorithm
-            List<Star> candidates;
+            List<Star> candidates = new List<Star>();
             bool found = false;
             while(!found)
             {
-                candidates = new List<Star>();
                 for(int i = 0; i < universe.Length; i+=2)
                 {
-                    if(candidates.Count == 0 && universe.Length == 1)
+                    if(i == universe.Length - 1)
                     {
-                        candidates = new List<Star>(universe);
+                        candidates.Add(universe[i]);
                         break;
                     }
 
                     if(universe[i].Equals(universe[i+1]))
                     {
-
+                        candidates.Add(universe[i]);
                     }
                     
                 }
@@ -60,7 +59,11 @@ namespace GalaxyQuest
                     found = true;
             }
 
-            Console.Out.WriteLine();
+            foreach (Star s in candidates)
+            {
+
+            }
+
             Console.Read();
         }
 
