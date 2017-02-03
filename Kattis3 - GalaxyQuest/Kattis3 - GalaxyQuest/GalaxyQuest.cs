@@ -11,22 +11,33 @@ namespace GalaxyQuest
     {
         static void Main(string[] args)
         {
-            string[] lines = File.ReadAllLines("k3test1.txt");
-
-            string[] info = lines[0].Split(' ');
-            int d = Int32.Parse(info[0]);
-            Star[] universe = new Star[Int32.Parse(info[1])];
-            for (int i = 1; i < lines.Length; i++)
-            {
-                string[] coords = lines[i].Split(' ');
-                universe[i] = new Star(Int32.Parse(coords[0]), Int32.Parse(coords[1]), d);
-            }
-
-            //string line = Console.ReadLine();
-            //while ((line = Console.ReadLine()) != null)
+            // get all the stars
+            //string[] lines = File.ReadAllLines("k3test1.txt");
+            //string[] info = lines[0].Split(' ');
+            //int d = Int32.Parse(info[0]);
+            //Star[] universe = new Star[Int32.Parse(info[1])];
+            //for (int i = 1; i < lines.Length; i++)
             //{
-
+            //    string[] coords = lines[i].Split(' ');
+            //    universe[i] = new Star(Int32.Parse(coords[0]), Int32.Parse(coords[1]), d);
             //}
+
+            Star[] universe = new Star[0];
+            int lc = 0;
+            int d;
+            foreach (string line in File.ReadAllLines("k3test1.txt"))
+            //while ((line = Console.ReadLine()) != null)
+            {
+                if (lc == 0)
+                {
+                    string[] info = line.Split(' ');
+                    d = Int32.Parse(info[0]);
+                    universe = new Star[Int32.Parse(info[1])];
+                    lc++;
+                    continue;
+                }
+                universe[lc++] = 
+            }
 
             Console.Out.WriteLine();
             Console.Read();
