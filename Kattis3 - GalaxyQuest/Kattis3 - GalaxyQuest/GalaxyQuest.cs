@@ -12,32 +12,32 @@ namespace GalaxyQuest
         static void Main(string[] args)
         {
             // get all the stars
-            //string[] lines = File.ReadAllLines("k3test1.txt");
-            //string[] info = lines[0].Split(' ');
-            //int d = Int32.Parse(info[0]);
-            //Star[] universe = new Star[Int32.Parse(info[1])];
-            //for (int i = 1; i < lines.Length; i++)
-            //{
-            //    string[] coords = lines[i].Split(' ');
-            //    universe[i] = new Star(Int32.Parse(coords[0]), Int32.Parse(coords[1]), d);
-            //}
-
             Star[] universe = new Star[0];
             int lc = 0;
-            int d;
-            foreach (string line in File.ReadAllLines("k3test1.txt"))
+            int d = 0;
+            int sc = 0;
+            foreach (string line in File.ReadLines("k3test1.txt"))
+            //string line = "";
             //while ((line = Console.ReadLine()) != null)
             {
                 if (lc == 0)
                 {
                     string[] info = line.Split(' ');
                     d = Int32.Parse(info[0]);
-                    universe = new Star[Int32.Parse(info[1])];
+                    sc = Int32.Parse(info[1]);
+                    universe = new Star[sc];
                     lc++;
                     continue;
                 }
-                universe[lc++] = 
+                string[] coords = line.Split(' ');
+                universe[lc - 1] = new Star(Int32.Parse(coords[0]), Int32.Parse(coords[1]), d);
+                lc++;
             }
+
+            // do the majority element algorithm
+            Star[] candidates = new Star[sc];
+
+            for
 
             Console.Out.WriteLine();
             Console.Read();
@@ -65,6 +65,11 @@ namespace GalaxyQuest
             public override int GetHashCode()
             {
                 return base.GetHashCode();
+            }
+
+            public void PrintCoords()
+            {
+                Console.Out.WriteLine("(" + x + ", " + y + ")");
             }
         }
     }
