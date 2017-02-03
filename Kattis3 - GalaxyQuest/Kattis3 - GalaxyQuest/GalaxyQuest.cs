@@ -12,7 +12,7 @@ namespace GalaxyQuest
         static void Main(string[] args)
         {
             // get all the stars
-            Queue<Star> universe = new LinkedList<Star>();
+            Stack<Star> universe = new Stack<Star>();
             int lc = 0;
             int d = 0;
             foreach (string line in File.ReadLines("k3test1.txt"))
@@ -27,17 +27,19 @@ namespace GalaxyQuest
                     continue;
                 }
                 string[] coords = line.Split(' ');
-                universe.AddFirst(new Star(Int32.Parse(coords[0]), Int32.Parse(coords[1]), d));
+                universe.Push(new Star(Int32.Parse(coords[0]), Int32.Parse(coords[1]), d));
             }
 
             // do the majority element algorithm
-            List<Star> candidates = new List<Star>();
+            Stack<Star> candidates = new Stack<Star>();
 
-            foreach (Star s in universe)
+            while(universe.Peek() != null)
             {
-                if (s.Equals(s.)
+                Star s1 = universe.Pop();
+                if ()
+                if (universe.Pop().Equals(universe.Peek()))
                 {
-                    
+                    candidates.Push(universe.Pop());
                 }
             }
 
