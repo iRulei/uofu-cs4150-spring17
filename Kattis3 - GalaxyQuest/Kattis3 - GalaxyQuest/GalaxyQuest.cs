@@ -35,11 +35,10 @@ namespace GalaxyQuest
 
             while(universe.Peek() != null)
             {
-                Star s1 = universe.Pop();
-                if ()
-                if (universe.Pop().Equals(universe.Peek()))
+                Star s = universe.Pop();
+                if (universe.Peek() == null || s.Equals(universe.Pop()))
                 {
-                    candidates.Push(universe.Pop());
+                    candidates.Push(s);
                 }
             }
 
