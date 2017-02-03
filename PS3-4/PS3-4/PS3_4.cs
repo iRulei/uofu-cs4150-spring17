@@ -10,7 +10,7 @@ namespace PS3_4
     {
         static void Main(string[] args)
         {
-            int[] A = new int[] { 2, 5, 6, 22 };
+            int[] A = new int[] { 2, 5, 7, 22 };
             int[] B = new int[] { 7, 8, 9, 14 };
 
             Console.Out.WriteLine(select(A, B, 5));
@@ -32,16 +32,16 @@ namespace PS3_4
             int i = (loA + hiA) / 2;
             int j = (loB + hiB) / 2;
 
-            if (A[i] > B[j])
-                if (k <= i + j)
-                    return select(A, loA, i, B, loB, hiB, k);
+            if (k <= i + j)
+                if (A[i] < B[j])
+                    return select(A, loA, hiA, B, loB, j-1, k);
+                else
+                    return select(A, loA, i-1, B, loB, hiB, k);
+            else
+                if (A[i] < B[j])
+                    return select(A, loA, hiA, B, j+1, hiB, k);
                 else
                     return select(A, i+1, hiA, B, loB, hiB, k);
-            else
-                if (k <= i + j)
-                    return select(A, loA, hiA, B, loB, j, k);
-                else
-                    return select(A, loA, hiA, B, j+1, hiB, k);
         }
     }
 }
