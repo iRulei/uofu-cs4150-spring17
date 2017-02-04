@@ -16,9 +16,9 @@ namespace GalaxyQuest
             int lc = 0;
             int d = 0;
             int sc = 0;
-            foreach (string line in File.ReadLines("k3test1.txt"))
-            //string line = "";
-            //while ((line = Console.ReadLine()) != null)
+            //foreach (string line in File.ReadLines("k3test1.txt"))
+            string line = "";
+            while ((line = Console.ReadLine()) != "DONE")
             {
                 if (lc == 0)
                 {
@@ -34,13 +34,10 @@ namespace GalaxyQuest
                 lc++;
             }
 
-            foreach(Star s in universe)
-            {
-                s.PrintCoords();
-            }
-            Console.ReadLine();
+            // keep a copy of the original universe
+            List<Star> OU = new List<Star>(universe);
 
-            // do the majority element algorithm
+            // find a majority element candidate
             List<Star> candidates = new List<Star>();
             bool found = false;
             while(!found)
@@ -65,9 +62,32 @@ namespace GalaxyQuest
                     found = true;
             }
 
-            foreach (Star s in candidates)
+            // check for an absence of candidates
+            if (candidates.Count == 0)
             {
-                s.PrintCoords();
+                Console.Write("NO");
+                return;
+            }
+
+            // assuming there is a candidate, 
+            // determine whether it is a majority element
+            Star cand = candidates.First<Star>();
+            int matchCount = 0;
+            foreach(Star s in OU)
+            {
+                if (cand.Equals(s))
+                {
+                    matchCount++;
+                }
+            }
+
+            if (matchCount >= sc/2)
+            {
+                Console.Write(matchCount);
+            }
+            else
+            {
+                Console.Write("NO");
             }
 
             Console.Read();
