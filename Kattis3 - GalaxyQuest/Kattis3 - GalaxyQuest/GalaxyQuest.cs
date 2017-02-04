@@ -16,9 +16,9 @@ namespace GalaxyQuest
             int lc = 0;
             int d = 0;
             int sc = 0;
-            //foreach (string line in File.ReadLines("k3test1.txt"))
-            string line = "";
-            while ((line = Console.ReadLine()) != "DONE")
+            foreach (string line in File.ReadLines("k3test8.txt"))
+            //string line = "";
+            //while ((line = Console.ReadLine()) != null)
             {
                 if (lc == 0)
                 {
@@ -34,19 +34,57 @@ namespace GalaxyQuest
                 lc++;
             }
 
+            /*
+            int mDex = 0;
+            int mCount = 1;
+
+            for (int i = 1; i < sc; i++)
+            {
+                if (universe[mDex].Equals(universe[i]))
+                    mCount++;
+                else
+                    mCount--;
+
+                if (mCount == 0)
+                {
+                    mDex = i;
+                    mCount = 1;
+                }
+            }
+
+            Star cand = universe[mDex];
+            int majNum = 0;
+            for (int i = 0; i < sc; i++)
+            {
+                if (universe[i].Equals(cand))
+                {
+                    majNum++;
+                }
+            }
+
+            if (majNum > sc / 2)
+                Console.Out.Write(majNum);
+            else
+                Console.Out.Write("NO");
+            */
+
             // keep a copy of the original universe
             List<Star> OU = new List<Star>(universe);
 
-            // find a majority element candidate
+            // find the majority element candidate
+            bool hasCand = true;
+            bool b = true;
+            int matchCount = 0;
             List<Star> candidates = new List<Star>();
-            bool found = false;
-            while(!found)
+            bool foundCands = false;
+            while(!foundCands)
             {
-                for(int i = 0; i < universe.Length; i+=2)
+                candidates = new List<Star>();
+
+                for (int i = 0; i < universe.Length; i+=2)
                 {
                     if(i == universe.Length - 1)
                     {
-                        candidates.Add(universe[i]);
                         break;
                     }
 
@@ -59,37 +97,50 @@ namespace GalaxyQuest
 
                 if (candidates.Count == 0)
                 {
-                    Console.Write("NO");
-                    //Console.Read();
-                    return;
+                    hasCand = false;
+                    break;
                 }
                 universe = candidates.ToArray();
                 
                 if (candidates.Count == 1)
-                    found = true;
+                    foundCands = true;
             }
 
-            // check for an absence of candidates
-
-            // assuming there is a candidate, 
-            // determine whether it is a majority element
-            Star cand = candidates.First<Star>();
-            int matchCount = 0;
-            foreach(Star s in OU)
+            if (hasCand)
             {
-                if (cand.Equals(s))
+                // assuming there is a candidate, 
+                // determine whether it is a majority element
+                Star cand = candidates.First<Star>();
+                foreach(Star s in OU)
                 {
-                    matchCount++;
+                    if (cand.Equals(s))
+                    {
+                        matchCount++;
+                    }
                 }
-            }
 
-            if (matchCount >= sc/2)
-            {
-                Console.Write(matchCount);
+                if (matchCount >= sc/2)
+                {
+                    hasCand = true;
+                }
+                else
+                {
+                    hasCand = false;
+                }
             }
             else
             {
                 Console.Write("NO");
+                b = false;
+            }
+
+            if (hasCand)
+            {
+                Console.Out.Write(matchCount);
+            }
+            else if (b)
+            {
+                Console.Out.Write("NO");
             }
 
             Console.Read();
@@ -119,9 +170,9 @@ namespace GalaxyQuest
                 return base.GetHashCode();
             }
 
-            public void PrintCoords()
+            public string Coords()
             {
-                Console.Out.WriteLine("(" + x + ", " + y + ")");
+                return "(" + x + ", " + y + ")";
             }
         }
     }
