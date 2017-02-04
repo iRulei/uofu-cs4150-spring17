@@ -56,6 +56,13 @@ namespace GalaxyQuest
                     }
                     
                 }
+
+                if (candidates.Count == 0)
+                {
+                    Console.Write("NO");
+                    //Console.Read();
+                    return;
+                }
                 universe = candidates.ToArray();
                 
                 if (candidates.Count == 1)
@@ -63,11 +70,6 @@ namespace GalaxyQuest
             }
 
             // check for an absence of candidates
-            if (candidates.Count == 0)
-            {
-                Console.Write("NO");
-                return;
-            }
 
             // assuming there is a candidate, 
             // determine whether it is a majority element
