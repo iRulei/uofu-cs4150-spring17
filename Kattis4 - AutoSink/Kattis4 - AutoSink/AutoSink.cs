@@ -18,17 +18,38 @@ namespace AutoSink
             string line;
             while ((line = Console.ReadLine()) != null)
             {
+                // extract city, highway, and trip counts (continue loop when each is found)
                 if (lc == 0)
                 {
                     cityCount = Int32.Parse(line);
+                    lc++;
+                    continue;
                 }
                 else if (lc == (cityCount + 1))
                 {
                     hwCount = Int32.Parse(line);
+                    lc++;
+                    continue;
                 }
                 else if (lc == (cityCount + hwCount + 2))
                 {
                     tripCount = Int32.Parse(line);
+                    lc++;
+                    continue;
+                }
+
+                // process city, highway, and trip information
+                if (0 < lc && lc < (cityCount + 1))
+                {
+
+                }
+                else if ((cityCount + 1) < lc && lc < (cityCount + hwCount + 2))
+                {
+
+                } 
+                else if ((cityCount + hwCount + 2) < lc)
+                {
+
                 }
             }
         }
