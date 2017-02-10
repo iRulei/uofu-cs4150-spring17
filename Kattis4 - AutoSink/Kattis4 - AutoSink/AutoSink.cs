@@ -12,5 +12,22 @@ namespace AutoSink
         {
 
         }
+
+        public void clearCosts(CityMap c)
+        {
+
+        }
+    }
+
+    class CityMap
+    {
+
+    }
+
+    class CityNode
+    {
+        public string name;
+        public int toll;
+        public int routeCost;
     }
 }
