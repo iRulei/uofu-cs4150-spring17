@@ -10,18 +10,20 @@ namespace AutoSink
     {
         static void Main(string[] args)
         {
+            int cityCount;
+            int 
 
-        }
+            string line;
+            while ((line = Console.ReadLine()) != null)
+            {
 
-        public void clearCosts(CityMap c)
-        {
-
+            }
         }
     }
 
     class CityMap
     {
-
+        public void clearCosts() { }
     }
 
     class CityNode
