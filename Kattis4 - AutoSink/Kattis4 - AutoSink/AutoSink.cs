@@ -39,17 +39,20 @@ namespace AutoSink
                 }
 
                 // process city, highway, and trip information
-                if (0 < lc && lc < (cityCount + 1))
+                if ((0 < lc) && (lc < (cityCount + 1)))
                 {
-
+                    lc++;
+                    continue;
                 }
-                else if ((cityCount + 1) < lc && lc < (cityCount + hwCount + 2))
+                else if (((cityCount + 1) < lc) && (lc < (cityCount + hwCount + 2)))
                 {
-
-                } 
+                    lc++;
+                    continue;
+                }
                 else if ((cityCount + hwCount + 2) < lc)
                 {
-
+                    lc++;
+                    continue;
                 }
             }
         }
