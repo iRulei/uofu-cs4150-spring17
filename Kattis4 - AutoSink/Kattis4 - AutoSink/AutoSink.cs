@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,13 +11,17 @@ namespace AutoSink
     {
         static void Main(string[] args)
         {
+            List<List<CityNode>> map = new List<List<CityNode>>();
+            foreach (List<CityNode> list in map)
+                list.List<CityNode>();
+
             int cityCount = -1;
             int hwCount = -1;
             int tripCount = -1;
             int lc = 0;
-
-            string line;
-            while ((line = Console.ReadLine()) != null)
+            //string line;
+            //while ((line = Console.ReadLine()) != null)
+            foreach(string line in File.ReadAllLines("k4test1.txt"))
             {
                 // extract city, highway, and trip counts (continue loop when each is found)
                 if (lc == 0)
@@ -55,11 +60,16 @@ namespace AutoSink
                     continue;
                 }
             }
+
+            Console.Out.WriteLine(cityCount + " " + hwCount + " " + tripCount);
+            Console.Read();
         }
     }
 
     class CityMap
     {
+
+        public CityMap() { }
         public void clearCosts() { }
     }
 
@@ -68,5 +78,11 @@ namespace AutoSink
         public string name;
         public int toll;
         public int routeCost;
+
+        public CityNode(string inName, int inToll)
+        {
+            name = inName;
+            toll = inToll;
+        }
     }
 }
