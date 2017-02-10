@@ -12,8 +12,6 @@ namespace AutoSink
         static void Main(string[] args)
         {
             List<List<CityNode>> map = new List<List<CityNode>>();
-            foreach (List<CityNode> list in map)
-                list.List<CityNode>();
 
             int cityCount = -1;
             int hwCount = -1;
