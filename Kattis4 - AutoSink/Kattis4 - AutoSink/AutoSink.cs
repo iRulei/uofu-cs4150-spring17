@@ -21,7 +21,7 @@ namespace AutoSink
             string[] lArray;
             //string line;
             //while ((line = Console.ReadLine()) != null)
-            foreach(string line in File.ReadAllLines("k4test1.txt"))
+            foreach(string line in File.ReadAllLines("k4test2.txt"))
             {
                 // extract city, highway, and trip counts (continue loop when each is found)
                 if (lc == 0)
@@ -95,11 +95,17 @@ namespace AutoSink
             foreach (City c in map.cities.Values)
                 if (c.visited)
                     reachable.Add(c);
-            
-            if (reachable.Contains(map.cities[finish]))
-                return new DFSResult(true, map.cities[start].GetCost(start, finish).cost);
 
-            return new DFSResult(false, 0);
+            reachable.Sort();
+
+            if (!reachable.Contains(map.cities[finish]))
+                return new DFSResult(false, 0);
+
+            foreach (City c in reachable)
+                c.SetCost(start, finish);
+
+
+            return new DFSResult(true, map.cities[start].cost);
         }
 
         static void Explore(Map map, string cName)
@@ -134,8 +140,29 @@ namespace AutoSink
             cost = 0;
         }
 
-        public DFSResult GetCost(string start, string finish)
+        public void SetCost(string start, string finish)
         {
+            List<int> costs = new List<int>();
+
+
+
+            foreach (City d in dests.Values)
+                costs.Add(d.cost);
+
+            if (name == finish)
+                cost = toll;
+            else if (name == start)
+                if (dests.ContainsKey(finish))
+                    cost = toll;
+                else
+                    cost = toll + costs.Min();
+            else
+                if (dests.ContainsKey(finish))
+
+            return;
+                
+
+            /* SLOW METHOD
             if (name == finish)
                 return new DFSResult(true, toll);
 
@@ -166,6 +193,8 @@ namespace AutoSink
                     return new DFSResult(true, vCosts.Min());
                 else
                     return new DFSResult(true, toll + vCosts.Min());
+
+            */
         }
 
         public void Reset()
