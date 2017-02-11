@@ -95,7 +95,25 @@ namespace AutoSink
             Console.Read();
         }
 
-        DFSResult explore(string[] t)
+        DFSResult explore(string[] t, Dictionary<string, CityNode> map)
+        {
+            DFSResult r = new DFSResult(false, -1);
+
+            if (t[0] == t[1])
+            {
+                r.hasRoute = true;
+                r.cost = 0;
+                return r;
+            }
+
+            CityNode cS = map[t[0]];
+            CityNode cF = map[t[1]];
+
+            return r;
+            
+        }
+
+        void explore(string t)
         {
 
         }
@@ -118,8 +136,8 @@ namespace AutoSink
 
     class DFSResult
     {
-        bool hasRoute;
-        int cost;
+        public bool hasRoute;
+        public int cost;
 
         public DFSResult(bool _hasRoute, int _cost)
         {
