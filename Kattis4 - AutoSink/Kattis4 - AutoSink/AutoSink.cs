@@ -11,7 +11,7 @@ namespace AutoSink
     {
         static void Main(string[] args)
         {
-            Dictionary<string, City> map = new Dictionary<string, City>();
+            Map map = new Map();
             List<string[]> trips = new List<string[]>();
 
             int cityCount = -1;
@@ -47,14 +47,14 @@ namespace AutoSink
                 if ((0 < lc) && (lc < (cityCount + 1)))
                 {
                     lArray = line.Split(' ');
-                    map.Add(lArray[0], new City(lArray[0], Int32.Parse(lArray[1])));
+                    map.cities.Add(lArray[0], new City(lArray[0], Int32.Parse(lArray[1])));
                     lc++;
                     continue;
                 }
                 else if (((cityCount + 1) < lc) && (lc < (cityCount + hwCount + 2)))
                 {
                     lArray = line.Split(' ');
-                    map[lArray[0]].dests.Add(map[lArray[1]]);
+                    map.cities[lArray[0]].dests.Add(map.cities[lArray[1]]);
                     lc++;
                     continue;
                 }
@@ -95,25 +95,28 @@ namespace AutoSink
             Console.Read();
         }
 
-        static DFSResult DFS(string[] t, Dictionary<string, City> map)
+        static DFSResult DFS(string[] t, Map map)
         {
             if (t[0] == t[1])
                 return new DFSResult(true, 0);
 
-            foreach (City c in map.Values)
-            {
+            foreach (City c in map.cities.Values)
                 c.Reset();
-            }
 
-
-            
+            foreach (City c in map.cities.Values)
+                if (!c.visited)
+                    Explore(map, c.name);
 
             return new DFSResult(false, -1);
         }
 
-        static void Explore(Dictionary<string, City> map, City c)
+        static void Explore(Map map, string cName)
         {
-            
+            map.cities[cName].visited = true;
+            map.cities[cName].pre = ++map.vNum;
+            foreach (City d in map.cities[cName].dests)
+                if (!d.visited)
+                    Explore(map, d.name);
         }
     }
 
@@ -147,13 +150,18 @@ namespace AutoSink
 
     class Map
     {
-        public City[] cities;
-        public bool[] visited;
+        public Dictionary<string, City> cities;
+        public int vNum;
 
-        public Map(int cityCount)
+        public Map()
         {
-            cities = new City[cityCount];
-            visited = new bool[cityCount];
+            cities = new Dictionary<string, City>();
+            vNum = 0;
+        }
+
+        public void Reset()
+        {
+            vNum = 0;
         }
     }
 
