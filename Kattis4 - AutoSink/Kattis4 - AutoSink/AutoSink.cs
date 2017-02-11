@@ -146,7 +146,10 @@ namespace AutoSink
 
             foreach (KeyValuePair<string, City> d in dests)
                 if (d.Key == finish)
-                    return new DFSResult(true, toll + d.Value.GetCost(start, finish).cost);
+                    if (name == start)
+                        return new DFSResult(true, d.Value.GetCost(start, finish).cost);
+                    else
+                        return new DFSResult(true, toll + d.Value.GetCost(start, finish).cost);
                 else
                     costs.Add(d.Value.GetCost(start, finish));
 
