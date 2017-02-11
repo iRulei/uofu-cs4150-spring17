@@ -11,7 +11,7 @@ namespace AutoSink
     {
         static void Main(string[] args)
         {
-            Dictionary<string, CityNode> map = new Dictionary<string, CityNode>();
+            Dictionary<string, City> map = new Dictionary<string, City>();
             List<string[]> trips = new List<string[]>();
 
             int cityCount = -1;
@@ -47,7 +47,7 @@ namespace AutoSink
                 if ((0 < lc) && (lc < (cityCount + 1)))
                 {
                     lArray = line.Split(' ');
-                    map.Add(lArray[0], new CityNode(lArray[0], Int32.Parse(lArray[1])));
+                    map.Add(lArray[0], new City(lArray[0], Int32.Parse(lArray[1])));
                     lc++;
                     continue;
                 }
@@ -70,7 +70,7 @@ namespace AutoSink
             // analyze each trip to determine feasibility/cost
             foreach(string[] t in trips)
             {
-                DFSResult r = explore(t);
+                DFSResult r = DFS(t, map);
             }
 
             /* TESTING OUTPUT
@@ -95,42 +95,65 @@ namespace AutoSink
             Console.Read();
         }
 
-        DFSResult explore(string[] t, Dictionary<string, CityNode> map)
+        static DFSResult DFS(string[] t, Dictionary<string, City> map)
         {
-            DFSResult r = new DFSResult(false, -1);
-
             if (t[0] == t[1])
+                return new DFSResult(true, 0);
+
+            foreach (City c in map.Values)
             {
-                r.hasRoute = true;
-                r.cost = 0;
-                return r;
+                c.Reset();
             }
 
-            CityNode cS = map[t[0]];
-            CityNode cF = map[t[1]];
 
-            return r;
+            
+
+            return new DFSResult(false, -1);
+        }
+
+        static void Explore(Dictionary<string, City> map, City c)
+        {
             
         }
-
-        void explore(string t)
-        {
-
-        }
-
     }
 
-    class CityNode
+    class City
     {
         public string name;
         public int toll;
-        public List<CityNode> dests;
+        public List<City> dests;
+        public bool visited;
+        public int pre;
+        public int post;
 
-        public CityNode(string _name, int _toll)
+        public City(string _name, int _toll)
         {
             name = _name;
             toll = _toll;
-            dests = new List<CityNode>();
+            dests = new List<City>();
+            visited = false;
+            pre = 0;
+            post = 0;
+        }
+
+        public void Reset()
+        {
+            toll = 0;
+            visited = false;
+            pre = 0;
+            post = 0;
+        }
+    }
+
+    class Map
+    {
+        public City[] cities;
+        public bool[] visited;
+
+        public Map(int cityCount)
+        {
+            cities = new City[cityCount];
+            visited = new bool[cityCount];
         }
     }
 
