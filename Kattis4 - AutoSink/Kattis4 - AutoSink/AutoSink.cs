@@ -75,24 +75,25 @@ namespace AutoSink
 
                 if (trips[i][0] == trips[i][1])
                 {
-                    Console.Out.WriteLine(trips[i][0] + " is " + trips[i][1]);
+                    //Console.Out.WriteLine(trips[i][0] + " is " + trips[i][1]);
                     results[i] = new DFSResult(true, 0);
                     continue;
                 }
 
                 List<City> reachable = DFS(map, trips[i][0]);
-
                 reachable.Sort();
+                foreach (City c in reachable)
+                    Console.Out.WriteLine(c.name);
 
                 if (reachable.Contains(map.cities[trips[i][1]]))
                 {
-                    Console.Out.WriteLine(trips[i][0] + " leads to " + trips[i][1]);
+                    //Console.Out.WriteLine(trips[i][0] + " leads to " + trips[i][1]);
                     results[i] = new DFSResult(true, map.cities[trips[i][0]].SetCost());
                     continue;
                 }
                 else
                 {
-                    Console.Out.WriteLine(trips[i][0] + " doesn't lead to " + trips[i][1]);
+                    //Console.Out.WriteLine(trips[i][0] + " doesn't lead to " + trips[i][1]);
                     results[i] = new DFSResult(false, -1);
                     continue;
                 }
@@ -112,6 +113,7 @@ namespace AutoSink
         {
             List<City> reachable = new List<City>();
 
+            map.Reset();
             foreach (City c in map.cities.Values)
                 c.Reset();
 
@@ -121,8 +123,8 @@ namespace AutoSink
                 if (c.visited)
                     reachable.Add(c);
 
-            foreach(City c in reachable)
-                Console.Out.WriteLine(c.name + ": (" + c.pre + "")
+            //foreach (City c in reachable)
+            //    Console.Out.WriteLine(c.name + ": (" + c.pre + ", " + c.post + ")");
 
             return reachable;
         }
@@ -164,9 +166,9 @@ namespace AutoSink
             List<int> costs = new List<int>() { toll };
             foreach(City d in dests)
                 costs.Add(d.SetCost());
-            Console.Out.WriteLine(name + " has toll " + toll + " and these downstream costs:");
-            foreach (City d in dests)
-                Console.Out.WriteLine(d.name + ": " + d.cost);
+            //Console.Out.WriteLine(name + " has toll " + toll + " and these downstream costs:");
+            //foreach (City d in dests)
+                //Console.Out.WriteLine(d.name + ": " + d.cost);
             return cost + costs.Min();
         }
 
@@ -191,7 +193,6 @@ namespace AutoSink
 
         public static bool operator <(City c1, City c2)
         {
-            Console.Out.WriteLine("lt");
             if (c1.post > c2.post)
                 return true;
             else
@@ -200,7 +201,6 @@ namespace AutoSink
 
         public static bool operator >(City c1, City c2)
         {
-            Console.Out.WriteLine("gt");
             if (c1.post < c2.post)
                 return true;
             else
