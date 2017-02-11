@@ -82,6 +82,8 @@ namespace AutoSink
 
                 List<City> reachable = DFS(map, trips[i][0]);
 
+                reachable.Sort();
+
                 if (reachable.Contains(map.cities[trips[i][1]]))
                 {
                     Console.Out.WriteLine(trips[i][0] + " leads to " + trips[i][1]);
@@ -175,6 +177,7 @@ namespace AutoSink
 
         public static bool operator <(City c1, City c2)
         {
+            Console.Out.WriteLine("lt");
             if (c1.post > c2.post)
                 return true;
             else
@@ -183,6 +186,7 @@ namespace AutoSink
 
         public static bool operator >(City c1, City c2)
         {
+            Console.Out.WriteLine("gt");
             if (c1.post < c2.post)
                 return true;
             else
