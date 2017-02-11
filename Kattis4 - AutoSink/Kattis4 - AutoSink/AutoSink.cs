@@ -159,7 +159,7 @@ namespace AutoSink
                 dCost = new DFSResult(true, costs.Min());
             else
                 if (costs.Count == 0)
-                    dCost = new DFSResult(true, toll);
+                    dCost = new DFSResult(false, 0);
                 else
                     dCost = new DFSResult(true, toll + costs.Min());
         }
