@@ -121,6 +121,9 @@ namespace AutoSink
                 if (c.visited)
                     reachable.Add(c);
 
+            foreach(City c in reachable)
+                Console.Out.WriteLine(c.name + ": (" + c.pre + "")
+
             return reachable;
         }
 
@@ -135,7 +138,7 @@ namespace AutoSink
         }
     }
 
-    class City
+    class City : IComparable
     {
         public string name;
         public int toll;
@@ -173,6 +176,17 @@ namespace AutoSink
             visited = false;
             pre = 0;
             post = 0;
+        }
+
+        public int CompareTo(object obj)
+        {
+            City other = (City)obj;
+            if (this.post > other.post)
+                return -1;
+            else if (this.post < other.post)
+                return 1;
+            else
+                return 0;
         }
 
         public static bool operator <(City c1, City c2)
