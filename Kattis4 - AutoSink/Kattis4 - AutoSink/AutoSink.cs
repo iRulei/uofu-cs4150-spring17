@@ -11,7 +11,7 @@ namespace AutoSink
     {
         static void Main(string[] args)
         {
-            Dictionary<CityNode, List<CityNode>> map = new Dictionary<CityNode, List<CityNodse>>();
+            Dictionary<string, CityNode> map = new Dictionary<string, CityNode>();
 
             int cityCount = -1;
             int hwCount = -1;
@@ -46,12 +46,14 @@ namespace AutoSink
                 if ((0 < lc) && (lc < (cityCount + 1)))
                 {
                     lineItems = line.Split(' ');
-                    map.Add(new CityNode(lineItems[0], Int32.Parse(lineItems[1])), new List<CityNode>());
+                    map.Add(lineItems[0], new CityNode(lineItems[0], Int32.Parse(lineItems[1])));
                     lc++;
                     continue;
                 }
                 else if (((cityCount + 1) < lc) && (lc < (cityCount + hwCount + 2)))
                 {
+                    lineItems = line.Split(' ');
+                    map[lineItems[0]].dests.Add(map[lineItems[1]]);
                     lc++;
                     continue;
                 }
@@ -79,11 +81,13 @@ namespace AutoSink
         public string name;
         public int toll;
         public int routeCost;
+        public List<CityNode> dests;
 
         public CityNode(string inName, int inToll)
         {
             name = inName;
             toll = inToll;
+            dests = new List<CityNode>();
         }
     }
 }
