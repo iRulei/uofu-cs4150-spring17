@@ -12,12 +12,13 @@ namespace AutoSink
         static void Main(string[] args)
         {
             Dictionary<string, CityNode> map = new Dictionary<string, CityNode>();
+            List<string[]> trips = new List<string[]>();
 
             int cityCount = -1;
             int hwCount = -1;
             int tripCount = -1;
             int lc = 0;
-            string[] lineItems;
+            string[] lArray;
             //string line;
             //while ((line = Console.ReadLine()) != null)
             foreach(string line in File.ReadAllLines("k4test1.txt"))
@@ -45,35 +46,48 @@ namespace AutoSink
                 // process city, highway, and trip information
                 if ((0 < lc) && (lc < (cityCount + 1)))
                 {
-                    lineItems = line.Split(' ');
-                    map.Add(lineItems[0], new CityNode(lineItems[0], Int32.Parse(lineItems[1])));
+                    lArray = line.Split(' ');
+                    map.Add(lArray[0], new CityNode(lArray[0], Int32.Parse(lArray[1])));
                     lc++;
                     continue;
                 }
                 else if (((cityCount + 1) < lc) && (lc < (cityCount + hwCount + 2)))
                 {
-                    lineItems = line.Split(' ');
-                    map[lineItems[0]].dests.Add(map[lineItems[1]]);
+                    lArray = line.Split(' ');
+                    map[lArray[0]].dests.Add(map[lArray[1]]);
                     lc++;
                     continue;
                 }
                 else if ((cityCount + hwCount + 2) < lc)
                 {
+                    lArray = line.Split(' ');
+                    trips.Add(new string[] { lArray[0], lArray[1] });
                     lc++;
                     continue;
                 }
             }
 
+            ///* TESTING OUTPUT
             Console.Out.WriteLine(cityCount + " " + hwCount + " " + tripCount);
+
+            foreach(CityNode c in map.Values)
+            {
+                Console.Out.WriteLine(c.name + " has a toll of " + c.toll + " and connects to:");
+                foreach(CityNode y in c.dests)
+                {
+                    Console.Out.WriteLine(y.name);
+                }
+            }
+
+            Console.Out.WriteLine("Planned trips:");
+            foreach(string[] t in trips)
+            {
+                Console.Out.WriteLine(t[0] + " to " + t[1]);
+            }
+            //*/// END TESTING OUTPUT
+
             Console.Read();
         }
-    }
-
-    class CityMap
-    {
-
-        public CityMap() { }
-        public void clearCosts() { }
     }
 
     class CityNode
