@@ -79,12 +79,9 @@ namespace AutoSink
                 //    continue;
                 //}
 
-                List<City> reachable = DFS(map, trips[i][0]);
-                reachable.Sort();
-                foreach (City c in reachable)
-                    Console.Out.WriteLine(c.name);
+                DFSResult dfsr = DFS(map, trips[i][0], trips[i][1]);
 
-                if (reachable.Contains(map.cities[trips[i][1]]))
+                if (dfsr.hasRoute)
                 {
                     //Console.Out.WriteLine(trips[i][0] + " leads to " + trips[i][1]);
                     results[i] = new DFSResult(true, map.cities[trips[i][0]].GetCost(map.cities[trips[i][0]], map.cities[trips[i][1]]));
@@ -108,15 +105,19 @@ namespace AutoSink
             Console.Read();
         }
 
-        static List<City> DFS(Map map, string city)
+        static DFSResult DFS(Map map, string start, string finish)
         {
+            if(start == finish)
+            {
+
+            }
             List<City> reachable = new List<City>();
 
             map.Reset();
             foreach (City c in map.cities.Values)
                 c.Reset();
 
-            Explore(map, city);
+            Explore(map, start, finish);
 
             foreach (City c in map.cities.Values)
                 if (c.visited)
@@ -124,8 +125,11 @@ namespace AutoSink
 
             //foreach (City c in reachable)
             //    Console.Out.WriteLine(c.name + ": (" + c.pre + ", " + c.post + ")");
+            
+            if (reachable.Contains(map.cities[finish]))
+                return new DFSResult(true, 0);
 
-            return reachable;
+            return new DFSResult(false, -1);
         }
 
         static void Explore(Map map, string cName)
