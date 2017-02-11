@@ -75,6 +75,7 @@ namespace AutoSink
 
                 if (trips[i][0] == trips[i][1])
                 {
+                    Console.Out.WriteLine(trips[i][0] + " is " + trips[i][1]);
                     results[i] = new DFSResult(true, 0);
                     continue;
                 }
@@ -83,11 +84,13 @@ namespace AutoSink
 
                 if (reachable.Contains(map.cities[trips[i][1]]))
                 {
+                    Console.Out.WriteLine(trips[i][0] + " leads to " + trips[i][1]);
                     results[i] = new DFSResult(true, map.cities[trips[i][0]].SetCost());
                     continue;
                 }
                 else
                 {
+                    Console.Out.WriteLine(trips[i][0] + " doesn't lead to " + trips[i][1]);
                     results[i] = new DFSResult(false, -1);
                     continue;
                 }
@@ -156,12 +159,15 @@ namespace AutoSink
             List<int> costs = new List<int>() { toll };
             foreach(City d in dests)
                 costs.Add(d.SetCost());
-            return costs.Min();
+            Console.Out.WriteLine(name + " has toll " + toll + " and these downstream costs:");
+            foreach (City d in dests)
+                Console.Out.WriteLine(d.name + ": " + d.cost);
+            return cost + costs.Min();
         }
 
         public void Reset()
         {
-            toll = 0;
+            cost = 0;
             visited = false;
             pre = 0;
             post = 0;
