@@ -70,13 +70,8 @@ namespace AutoSink
             DFSResult[] results = new DFSResult[tripCount];
             for(int i = 0; i < tripCount; i++)
             {
-                Console.Out.WriteLine("\nTRIP " + (i + 1) + ": " + trips[i][0] + " to " + trips[i][1]);
                 DFSResult dfsr = DFS(map, trips[i][0], trips[i][1]);
-
-                if (dfsr.hasRoute)
-                    Console.Out.WriteLine(dfsr.cost);
-                else
-                    Console.Out.WriteLine("NO");
+                Console.Out.WriteLine(dfsr.ToString());
             }
 
             Console.Read();
@@ -102,11 +97,7 @@ namespace AutoSink
                 return new DFSResult(false, 0);
 
             foreach (City c in reachable)
-                Console.Out.WriteLine(c.name);
-
-            foreach (City c in reachable)
                 c.SetCost(start, finish);
-
 
             return new DFSResult(true, map.cities[start].dCost.cost);
         }
@@ -167,7 +158,10 @@ namespace AutoSink
             else if (name == start)
                 dCost = new DFSResult(true, costs.Min());
             else
-                dCost = new DFSResult(true, toll + costs.Min());
+                if (costs.Count == 0)
+                    dCost = new DFSResult(true, toll);
+                else
+                    dCost = new DFSResult(true, toll + costs.Min());
         }
 
         public void Reset()
