@@ -76,8 +76,6 @@ namespace AutoSink
 
         static List<City> DFS(Map map)
         {
-            if (t[0] == t[1])
-                return new DFSResult(true, 0);
 
             foreach (City c in map.cities.Values)
                 c.Reset();
@@ -85,8 +83,6 @@ namespace AutoSink
             foreach (City c in map.cities.Values)
                 if (!c.visited)
                     Explore(map, c.name);
-
-            return new DFSResult(false, -1);
         }
 
         static void Explore(Map map, string cName)
@@ -125,6 +121,22 @@ namespace AutoSink
             visited = false;
             pre = 0;
             post = 0;
+        }
+
+        public static bool operator <(City c1, City c2)
+        {
+            if (c1.post < c2.post)
+                return true;
+            else
+                return false;
+        }
+
+        public static bool operator >(City c1, City c2)
+        {
+            if (c1.post > c2.post)
+                return true;
+            else
+                return false;
         }
     }
 
