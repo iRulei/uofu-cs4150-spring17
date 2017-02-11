@@ -11,12 +11,13 @@ namespace AutoSink
     {
         static void Main(string[] args)
         {
-            List<List<CityNode>> map = new List<List<CityNode>>();
+            Dictionary<CityNode, List<CityNode>> map = new Dictionary<CityNode, List<CityNodse>>();
 
             int cityCount = -1;
             int hwCount = -1;
             int tripCount = -1;
             int lc = 0;
+            string[] lineItems;
             //string line;
             //while ((line = Console.ReadLine()) != null)
             foreach(string line in File.ReadAllLines("k4test1.txt"))
@@ -44,6 +45,8 @@ namespace AutoSink
                 // process city, highway, and trip information
                 if ((0 < lc) && (lc < (cityCount + 1)))
                 {
+                    lineItems = line.Split(' ');
+                    map.Add(new CityNode(lineItems[0], Int32.Parse(lineItems[1])), new List<CityNode>());
                     lc++;
                     continue;
                 }
