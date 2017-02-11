@@ -67,14 +67,19 @@ namespace AutoSink
                 }
             }
 
-            List<City> topSort = DFS(map);
+            DFSResult[] results = new DFSResult[2];
+            for(int i = 0; i < tripCount; i++)
+            {
+                List<City> cities = DFS(map, trips[i][0]);
+
+            }
 
 
 
             Console.Read();
         }
 
-        static List<City> DFS(Map map)
+        static List<City> DFS(Map map, string city)
         {
 
             foreach (City c in map.cities.Values)
@@ -104,6 +109,7 @@ namespace AutoSink
         public bool visited;
         public int pre;
         public int post;
+        public int cost;
 
         public City(string _name, int _toll)
         {
@@ -113,6 +119,15 @@ namespace AutoSink
             visited = false;
             pre = 0;
             post = 0;
+            cost = 0;
+        }
+
+        public int SetCost()
+        {
+            List<int> costs = new List<int>() { cost };
+            foreach(City d in dests)
+                costs.Add(d.SetCost());
+            return costs.Max();
         }
 
         public void Reset()
@@ -125,7 +140,7 @@ namespace AutoSink
 
         public static bool operator <(City c1, City c2)
         {
-            if (c1.post < c2.post)
+            if (c1.post > c2.post)
                 return true;
             else
                 return false;
@@ -133,7 +148,7 @@ namespace AutoSink
 
         public static bool operator >(City c1, City c2)
         {
-            if (c1.post > c2.post)
+            if (c1.post < c2.post)
                 return true;
             else
                 return false;
@@ -166,6 +181,14 @@ namespace AutoSink
         {
             hasRoute = _hasRoute;
             cost = _cost;
+        }
+
+        public override string ToString()
+        {
+            if (hasRoute)
+                return "" + cost;
+            else
+                return "NO";
         }
     }
 }
