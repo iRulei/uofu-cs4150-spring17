@@ -67,35 +67,14 @@ namespace AutoSink
                 }
             }
 
-            // analyze each trip to determine feasibility/cost
-            foreach(string[] t in trips)
-            {
-                DFSResult r = DFS(t, map);
-            }
+            List<City> topSort = DFS(map);
 
-            /* TESTING OUTPUT
-            Console.Out.WriteLine(cityCount + " " + hwCount + " " + tripCount);
 
-            foreach(CityNode c in map.Values)
-            {
-                Console.Out.WriteLine("\n" + c.name + " has a toll of " + c.toll + " and connects to:");
-                foreach(CityNode y in c.dests)
-                {
-                    Console.Out.WriteLine(y.name);
-                }
-            }
-
-            Console.Out.WriteLine("\nPlanned trips:");
-            foreach(string[] t in trips)
-            {
-                Console.Out.WriteLine(t[0] + " to " + t[1]);
-            }
-            */// END TESTING OUTPUT
 
             Console.Read();
         }
 
-        static DFSResult DFS(string[] t, Map map)
+        static List<City> DFS(Map map)
         {
             if (t[0] == t[1])
                 return new DFSResult(true, 0);
@@ -117,6 +96,7 @@ namespace AutoSink
             foreach (City d in map.cities[cName].dests)
                 if (!d.visited)
                     Explore(map, d.name);
+            map.cities[cName].post = ++map.vNum;
         }
     }
 
