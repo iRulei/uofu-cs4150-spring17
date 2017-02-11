@@ -21,7 +21,7 @@ namespace AutoSink
             string[] lArray;
             //string line;
             //while ((line = Console.ReadLine()) != null)
-            foreach(string line in File.ReadAllLines("k4test2.txt"))
+            foreach(string line in File.ReadAllLines("k4test1.txt"))
             {
                 // extract city, highway, and trip counts (continue loop when each is found)
                 if (lc == 0)
@@ -71,18 +71,12 @@ namespace AutoSink
             for(int i = 0; i < tripCount; i++)
             {
                 Console.Out.WriteLine("\nTRIP " + (i + 1) + ": " + trips[i][0] + " to " + trips[i][1]);
-
                 DFSResult dfsr = DFS(map, trips[i][0], trips[i][1]);
 
                 if (dfsr.hasRoute)
                     Console.Out.WriteLine(dfsr.cost);
                 else
                     Console.Out.WriteLine("NO");
-            }
-
-            foreach(DFSResult dr in results)
-            {
-                Console.Out.WriteLine(dr.ToString());
             }
 
             Console.Read();
@@ -96,9 +90,6 @@ namespace AutoSink
             List<City> reachable = new List<City>();
 
             map.Reset();
-            foreach (City c in map.cities.Values)
-                c.Reset();
-
             Explore(map, start);
 
             foreach (City c in map.cities.Values)
@@ -136,7 +127,7 @@ namespace AutoSink
         {
             name = _name;
             toll = _toll;
-            dests = new List<City>();
+            dests = new Dictionary<string, City>();
             visited = false;
             pre = 0;
             post = 0;
@@ -168,7 +159,10 @@ namespace AutoSink
             if (vCosts.Count == 0)
                 return new DFSResult(false, 0);
             else
-                return new DFSResult(true, toll + vCosts.Min());
+                if (name == start)
+                    return new DFSResult(true, vCosts.Min());
+                else
+                    return new DFSResult(true, toll + vCosts.Min());
         }
 
         public void Reset()
@@ -204,6 +198,8 @@ namespace AutoSink
         public void Reset()
         {
             vNum = 0;
+            foreach (KeyValuePair<string, City> c in cities)
+                c.Value.Reset();
         }
     }
 
