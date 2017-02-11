@@ -67,41 +67,64 @@ namespace AutoSink
                 }
             }
 
-            ///* TESTING OUTPUT
+            // analyze each trip to determine feasibility/cost
+            foreach(string[] t in trips)
+            {
+                DFSResult r = explore(t);
+            }
+
+            /* TESTING OUTPUT
             Console.Out.WriteLine(cityCount + " " + hwCount + " " + tripCount);
 
             foreach(CityNode c in map.Values)
             {
-                Console.Out.WriteLine(c.name + " has a toll of " + c.toll + " and connects to:");
+                Console.Out.WriteLine("\n" + c.name + " has a toll of " + c.toll + " and connects to:");
                 foreach(CityNode y in c.dests)
                 {
                     Console.Out.WriteLine(y.name);
                 }
             }
 
-            Console.Out.WriteLine("Planned trips:");
+            Console.Out.WriteLine("\nPlanned trips:");
             foreach(string[] t in trips)
             {
                 Console.Out.WriteLine(t[0] + " to " + t[1]);
             }
-            //*/// END TESTING OUTPUT
+            */// END TESTING OUTPUT
 
             Console.Read();
         }
+
+        DFSResult explore(string[] t)
+        {
+
+        }
+
     }
 
     class CityNode
     {
         public string name;
         public int toll;
-        public int routeCost;
         public List<CityNode> dests;
 
-        public CityNode(string inName, int inToll)
+        public CityNode(string _name, int _toll)
         {
-            name = inName;
-            toll = inToll;
+            name = _name;
+            toll = _toll;
             dests = new List<CityNode>();
+        }
+    }
+
+    class DFSResult
+    {
+        bool hasRoute;
+        int cost;
+
+        public DFSResult(bool _hasRoute, int _cost)
+        {
+            hasRoute = _hasRoute;
+            cost = _cost;
         }
     }
 }
