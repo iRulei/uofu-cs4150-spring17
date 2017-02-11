@@ -21,7 +21,7 @@ namespace AutoSink
             string[] lArray;
             //string line;
             //while ((line = Console.ReadLine()) != null)
-            foreach(string line in File.ReadAllLines("k4test1.txt"))
+            foreach(string line in File.ReadAllLines("k4test3.txt"))
             {
                 // extract city, highway, and trip counts (continue loop when each is found)
                 if (lc == 0)
@@ -102,10 +102,13 @@ namespace AutoSink
                 return new DFSResult(false, 0);
 
             foreach (City c in reachable)
+                Console.Out.WriteLine(c.name);
+
+            foreach (City c in reachable)
                 c.SetCost(start, finish);
 
 
-            return new DFSResult(true, map.cities[start].cost);
+            return new DFSResult(true, map.cities[start].dCost.cost);
         }
 
         static void Explore(Map map, string cName)
@@ -127,7 +130,7 @@ namespace AutoSink
         public bool visited;
         public int pre;
         public int post;
-        public int cost;
+        public DFSResult dCost;
 
         public City(string _name, int _toll)
         {
@@ -137,33 +140,39 @@ namespace AutoSink
             visited = false;
             pre = 0;
             post = 0;
-            cost = 0;
+            dCost = new DFSResult(false, 0);
         }
 
         public void SetCost(string start, string finish)
         {
-            List<int> costs = new List<int>();
+            List<DFSResult> allCosts = new List<DFSResult>();
 
             foreach (City d in dests.Values)
-                costs.Add(d.cost);
+                allCosts.Add(new DFSResult(d.dCost.hasRoute, d.dCost.cost));
 
-            if (name == finish || dests.Count == 0)
-                cost = toll;
+            List<DFSResult> dCosts = new List<DFSResult>();
+            List<int> costs = new List<int>();
+
+            foreach (DFSResult dfsr in allCosts)
+                if (dfsr.hasRoute)
+                {
+                    dCosts.Add(dfsr);
+                    costs.Add(dfsr.cost);
+                }
+
+            if (name == finish)
+                dCost = new DFSResult(true, toll);
+            else if (dests.Count == 0)
+                dCost = new DFSResult(false, toll);
             else if (name == start)
-                if (dests.ContainsKey(finish))
-                    cost = dests[finish].cost;
-                else
-                    cost = costs.Min();
+                dCost = new DFSResult(true, costs.Min());
             else
-                if (dests.ContainsKey(finish))
-                    cost = toll + dests[finish].cost;
-                else
-                    cost = toll + costs.Min();
+                dCost = new DFSResult(true, toll + costs.Min());
         }
 
         public void Reset()
         {
-            cost = 0;
+            dCost = new DFSResult(false, 0);
             visited = false;
             pre = 0;
             post = 0;
