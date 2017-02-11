@@ -75,19 +75,9 @@ namespace AutoSink
                 DFSResult dfsr = DFS(map, trips[i][0], trips[i][1]);
 
                 if (dfsr.hasRoute)
-                {
-                    //Console.Out.WriteLine(trips[i][0] + " leads to " + trips[i][1]);
                     Console.Out.WriteLine(dfsr.cost);
-                    continue;
-                }
                 else
-                {
-                    //Console.Out.WriteLine(trips[i][0] + " doesn't lead to " + trips[i][1]);
                     Console.Out.WriteLine("NO");
-                    continue;
-                }
-
-
             }
 
             foreach(DFSResult dr in results)
@@ -116,9 +106,9 @@ namespace AutoSink
                     reachable.Add(c);
             
             if (reachable.Contains(map.cities[finish]))
-                return new DFSResult(true, 0);
+                return new DFSResult(true, map.cities[start].GetCost(start, finish).cost);
 
-            return new DFSResult(false, -1);
+            return new DFSResult(false, 0);
         }
 
         static void Explore(Map map, string cName)
@@ -159,7 +149,7 @@ namespace AutoSink
                 return new DFSResult(true, toll);
 
             if (dests.Count == 0)
-                return new DFSResult(false, Int32.MaxValue);
+                return new DFSResult(false, 0);
 
             List<DFSResult> costs = new List<DFSResult>();
 
@@ -168,8 +158,17 @@ namespace AutoSink
                     return new DFSResult(true, toll + d.Value.GetCost(start, finish).cost);
                 else
                     costs.Add(d.Value.GetCost(start, finish));
-    
-            return new DFSResult(false, -1);
+
+            List<int> vCosts = new List<int>();
+
+            foreach (DFSResult r in costs)
+                if (r.hasRoute)
+                    vCosts.Add(r.cost);
+
+            if (vCosts.Count == 0)
+                return new DFSResult(false, 0);
+            else
+                return new DFSResult(true, toll + vCosts.Min());
         }
 
         public void Reset()
