@@ -21,7 +21,7 @@ namespace AutoSink
             string[] lArray;
             //string line;
             //while ((line = Console.ReadLine()) != null)
-            foreach(string line in File.ReadAllLines("k4test1.txt"))
+            foreach(string line in File.ReadAllLines("k4test2.txt"))
             {
                 // extract city, highway, and trip counts (continue loop when each is found)
                 if (lc == 0)
@@ -70,15 +70,14 @@ namespace AutoSink
             DFSResult[] results = new DFSResult[tripCount];
             for(int i = 0; i < tripCount; i++)
             {
-                Console.Out.WriteLine("\nTRIP " + (i + 1));
-                Console.Out.WriteLine(trips[i][0] + " to " + trips[i][1]);
+                Console.Out.WriteLine("\nTRIP " + (i + 1) + ": " + trips[i][0] + " to " + trips[i][1]);
 
-                if (trips[i][0] == trips[i][1])
-                {
-                    //Console.Out.WriteLine(trips[i][0] + " is " + trips[i][1]);
-                    results[i] = new DFSResult(true, 0);
-                    continue;
-                }
+                //if (trips[i][0] == trips[i][1])
+                //{
+                //    //Console.Out.WriteLine(trips[i][0] + " is " + trips[i][1]);
+                //    results[i] = new DFSResult(true, 0);
+                //    continue;
+                //}
 
                 List<City> reachable = DFS(map, trips[i][0]);
                 reachable.Sort();
@@ -88,7 +87,7 @@ namespace AutoSink
                 if (reachable.Contains(map.cities[trips[i][1]]))
                 {
                     //Console.Out.WriteLine(trips[i][0] + " leads to " + trips[i][1]);
-                    results[i] = new DFSResult(true, map.cities[trips[i][0]].SetCost());
+                    results[i] = new DFSResult(true, map.cities[trips[i][0]].GetCost(map.cities[trips[i][0]], map.cities[trips[i][1]]));
                     continue;
                 }
                 else
@@ -161,14 +160,16 @@ namespace AutoSink
             cost = 0;
         }
 
-        public int SetCost()
+        public DFSResult GetCost(string start, string finish)
         {
+            if (name == finish)
+                return new DFSResult(true, toll);
+
             List<int> costs = new List<int>() { toll };
-            foreach(City d in dests)
-                costs.Add(d.SetCost());
-            //Console.Out.WriteLine(name + " has toll " + toll + " and these downstream costs:");
+
             //foreach (City d in dests)
-                //Console.Out.WriteLine(d.name + ": " + d.cost);
+            //    costs.Add(d.GetCost(start, finish).);
+
             return cost + costs.Min();
         }
 
@@ -183,28 +184,11 @@ namespace AutoSink
         public int CompareTo(object obj)
         {
             City other = (City)obj;
-            if (this.post > other.post)
+            if (this.post < other.post)
                 return -1;
-            else if (this.post < other.post)
+            else if (this.post > other.post)
                 return 1;
-            else
-                return 0;
-        }
-
-        public static bool operator <(City c1, City c2)
-        {
-            if (c1.post > c2.post)
-                return true;
-            else
-                return false;
-        }
-
-        public static bool operator >(City c1, City c2)
-        {
-            if (c1.post < c2.post)
-                return true;
-            else
-                return false;
+            return 0;
         }
     }
 
