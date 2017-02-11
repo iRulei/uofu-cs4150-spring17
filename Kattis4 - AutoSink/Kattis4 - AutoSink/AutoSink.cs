@@ -67,27 +67,56 @@ namespace AutoSink
                 }
             }
 
-            DFSResult[] results = new DFSResult[2];
+            DFSResult[] results = new DFSResult[tripCount];
             for(int i = 0; i < tripCount; i++)
             {
-                List<City> cities = DFS(map, trips[i][0]);
+                Console.Out.WriteLine("\nTRIP " + (i + 1));
+                Console.Out.WriteLine(trips[i][0] + " to " + trips[i][1]);
+
+                if (trips[i][0] == trips[i][1])
+                {
+                    results[i] = new DFSResult(true, 0);
+                    continue;
+                }
+
+                List<City> reachable = DFS(map, trips[i][0]);
+
+                if (reachable.Contains(map.cities[trips[i][1]]))
+                {
+                    results[i] = new DFSResult(true, map.cities[trips[i][0]].SetCost());
+                    continue;
+                }
+                else
+                {
+                    results[i] = new DFSResult(false, -1);
+                    continue;
+                }
+
 
             }
 
-
+            foreach(DFSResult dr in results)
+            {
+                Console.Out.WriteLine(dr.ToString());
+            }
 
             Console.Read();
         }
 
         static List<City> DFS(Map map, string city)
         {
+            List<City> reachable = new List<City>();
 
             foreach (City c in map.cities.Values)
                 c.Reset();
 
+            Explore(map, city);
+
             foreach (City c in map.cities.Values)
-                if (!c.visited)
-                    Explore(map, c.name);
+                if (c.visited)
+                    reachable.Add(c);
+
+            return reachable;
         }
 
         static void Explore(Map map, string cName)
@@ -124,10 +153,10 @@ namespace AutoSink
 
         public int SetCost()
         {
-            List<int> costs = new List<int>() { cost };
+            List<int> costs = new List<int>() { toll };
             foreach(City d in dests)
                 costs.Add(d.SetCost());
-            return costs.Max();
+            return costs.Min();
         }
 
         public void Reset()
