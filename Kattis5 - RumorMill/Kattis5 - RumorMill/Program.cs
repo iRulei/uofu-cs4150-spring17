@@ -80,12 +80,18 @@ namespace Kattis5
             fQ = new Queue<string>();
         }
 
-        public Spread(string start)
+        public void Spread(string start)
         {
             int day = 0;
-            fQ.
+            fQ.Enqueue(start);
 
-            foreach(string kid in friends)
+            while (fQ.Count > 0)
+            {
+                foreach(string kid in friendsOf[fQ.Dequeue()])
+                {
+
+                }
+            }
         }
     }
 }
