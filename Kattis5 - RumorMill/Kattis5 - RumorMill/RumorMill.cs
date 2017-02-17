@@ -11,6 +11,10 @@ namespace RumorMill
     {
         static void Main(string[] args)
         {
+            // graph
+
+
+            // file reading
             int sCount = -1;
             int fCount = -1;
             int rCount = -1;
@@ -20,7 +24,7 @@ namespace RumorMill
             //while ((line = Console.ReadLine()) != null)
             foreach (string line in File.ReadAllLines("k5test1.txt"))
             {
-                // extract city, highway, and trip counts (continue loop when each is found)
+                // extract student, friendship, and report counts (continue loop when each is found)
                 if (lc == 0)
                 {
                     sCount = Int32.Parse(line);
@@ -39,7 +43,39 @@ namespace RumorMill
                     lc++;
                     continue;
                 }
+
+                // load that information into a graph
+                if (0 < lc && lc < (sCount + 1))
+                {
+
+                }
+                else if ((sCount + 1) < lc && lc < (sCount + fCount + 2))
+                {
+
+                }
+                else if ((sCount + fCount + 2) < lc)
+                {
+
+                }
             }
+        }
+    }
+
+    class ClassGraph
+    {
+        Dictionary<string, string> prev;
+        Dictionary<string, bool> visited;
+
+        public ClassGraph()
+        {
+            prev = new Dictionary<string, string>();
+            visited = new Dictionary<string, bool>();
+        }
+
+        public void ResetGraph()
+        {
+            prev = new Dictionary<string, string>();
+            visited = new Dictionary<string, bool>();
         }
     }
 }
