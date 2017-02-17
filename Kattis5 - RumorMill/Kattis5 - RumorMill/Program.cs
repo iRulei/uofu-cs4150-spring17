@@ -55,12 +55,14 @@ namespace Kattis5
                 {
                     string[] pair = line.Split(' ');
                     og.friendsOf[pair[0]].Add(pair[1]);
+                    og.friendsOf[pair[1]].Add(pair[0]);
                 }
                 else if ((sCount + fCount + 2) < lc)
                 {
                     g = og;
                     g.Spread(line);
                 }
+                lc++;
             }
         }
     }
@@ -86,7 +88,7 @@ namespace Kattis5
             while (fQ.Count > 0)
             {
                 string kid = fQ.Dequeue();
-                foreach(string friend in friendsOf[fQ.Dequeue()])
+                foreach(string friend in friendsOf[kid])
                 {
                     if(dayTold[friend] == Int32.MaxValue)
                     {
@@ -98,11 +100,16 @@ namespace Kattis5
             }
 
             Dictionary<int, List<string>> d2k = new Dictionary<int, List<string>>();
-            StringBuilder report = new StringBuilder();
+            for(int i = 0; i <= dayTold.Values.Max(); i++)
+            {
+                d2k.Add(i, new List<string>());
+            }
             foreach(KeyValuePair<string, int> kvp in dayTold)
             {
                 d2k[kvp.Value].Add(kvp.Key);
             }
+
+            StringBuilder report = new StringBuilder();
             foreach(List<string> l in d2k.Values)
             {
                 l.Sort();
