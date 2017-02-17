@@ -22,7 +22,7 @@ namespace Kattis5
             int lc = 0;
             //string line;
             //while ((line = Console.ReadLine()) != null)
-            foreach (string line in File.ReadAllLines("k5test1.txt"))
+            foreach (string line in File.ReadAllLines("k5test2.txt"))
             {
                 // extract student, friendship, and report counts (continue loop when each is found)
                 if (lc == 0)
@@ -97,13 +97,23 @@ namespace Kattis5
                 }
             }
 
-            Dictionary<int, SortedList<>>
-            int daysGoneBy = dayTold.Values.Max();
+            Dictionary<int, List<string>> d2k = new Dictionary<int, List<string>>();
             StringBuilder report = new StringBuilder();
-            for (int i = 0; i < (daysGoneBy + 1); i++)
+            foreach(KeyValuePair<string, int> kvp in dayTold)
             {
-
+                d2k[kvp.Value].Add(kvp.Key);
             }
+            foreach(List<string> l in d2k.Values)
+            {
+                l.Sort();
+                foreach(string s in l)
+                {
+                    report.Append(s + " ");
+                }
+            }
+
+            report.Remove(report.Length - 1, 1);
+            Console.Out.WriteLine(report.ToString());
         }
     }
 }
