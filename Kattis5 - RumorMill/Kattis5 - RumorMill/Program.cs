@@ -83,7 +83,9 @@ namespace Kattis5
         public Spread(string start)
         {
             int day = 0;
+            fQ.
 
+            foreach(string kid in friends)
         }
     }
 }
