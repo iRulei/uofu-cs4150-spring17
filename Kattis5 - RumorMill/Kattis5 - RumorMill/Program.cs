@@ -87,9 +87,15 @@ namespace Kattis5
 
             while (fQ.Count > 0)
             {
-                foreach(string kid in friendsOf[fQ.Dequeue()])
+                string kid = fQ.Dequeue();
+                foreach(string friend in friendsOf[fQ.Dequeue()])
                 {
-                    fQ.Enqueue(kid);
+                    if(dayTold[friend] == Int32.MaxValue)
+                    {
+                        fQ.Enqueue(friend);
+                        dayTold[friend] = dayTold[kid] + 1;
+                        toldBy[friend] = kid;
+                    }
                 }
             }
         }
