@@ -21,7 +21,7 @@ namespace AutoSink
             string[] lArray;
             //string line;
             //while ((line = Console.ReadLine()) != null)
-            foreach(string line in File.ReadAllLines("k4test1.txt"))
+            foreach(string line in File.ReadAllLines("k4test3.txt"))
             {
                 // extract city, highway, and trip counts (continue loop when each is found)
                 if (lc == 0)
@@ -54,7 +54,7 @@ namespace AutoSink
                 else if (((cityCount + 1) < lc) && (lc < (cityCount + hwCount + 2)))
                 {
                     lArray = line.Split(' ');
-                    map.cities[lArray[0]].dests.Add(map.cities[lArray[1]]);
+                    map.cities[lArray[0]].dests.Add(map.cities[lArray[1]].name, map.cities[lArray[1]]);
                     lc++;
                     continue;
                 }
@@ -67,76 +67,119 @@ namespace AutoSink
                 }
             }
 
-            List<City> topSort = DFS(map);
-
-
+            DFSResult[] results = new DFSResult[tripCount];
+            for(int i = 0; i < tripCount; i++)
+            {
+                DFSResult dfsr = DFS(map, trips[i][0], trips[i][1]);
+                Console.Out.WriteLine(dfsr.ToString());
+            }
 
             Console.Read();
         }
 
-        static List<City> DFS(Map map)
+        static DFSResult DFS(Map map, string start, string finish)
         {
+            if (start == finish)
+                return new DFSResult(true, 0);
+
+            List<City> reachable = new List<City>();
+
+            map.Reset();
+            Explore(map, start);
 
             foreach (City c in map.cities.Values)
-                c.Reset();
+                if (c.visited)
+                    reachable.Add(c);
 
-            foreach (City c in map.cities.Values)
-                if (!c.visited)
-                    Explore(map, c.name);
+            reachable.Sort();
+
+            if (!reachable.Contains(map.cities[finish]))
+                return new DFSResult(false, 0);
+
+            foreach (City c in reachable)
+                c.SetCost(start, finish);
+
+            return new DFSResult(true, map.cities[start].dCost.cost);
         }
 
         static void Explore(Map map, string cName)
         {
             map.cities[cName].visited = true;
             map.cities[cName].pre = ++map.vNum;
-            foreach (City d in map.cities[cName].dests)
+            foreach (City d in map.cities[cName].dests.Values)
                 if (!d.visited)
                     Explore(map, d.name);
             map.cities[cName].post = ++map.vNum;
         }
     }
 
-    class City
+    class City : IComparable
     {
         public string name;
         public int toll;
-        public List<City> dests;
+        public Dictionary<string, City> dests;
         public bool visited;
         public int pre;
         public int post;
+        public DFSResult dCost;
 
         public City(string _name, int _toll)
         {
             name = _name;
             toll = _toll;
-            dests = new List<City>();
+            dests = new Dictionary<string, City>();
             visited = false;
             pre = 0;
             post = 0;
+            dCost = new DFSResult(false, 0);
+        }
+
+        public void SetCost(string start, string finish)
+        {
+            List<DFSResult> allCosts = new List<DFSResult>();
+
+            foreach (City d in dests.Values)
+                allCosts.Add(new DFSResult(d.dCost.hasRoute, d.dCost.cost));
+
+            List<DFSResult> dCosts = new List<DFSResult>();
+            List<int> costs = new List<int>();
+
+            foreach (DFSResult dfsr in allCosts)
+                if (dfsr.hasRoute)
+                {
+                    dCosts.Add(dfsr);
+                    costs.Add(dfsr.cost);
+                }
+
+            if (name == finish)
+                dCost = new DFSResult(true, toll);
+            else if (dests.Count == 0)
+                dCost = new DFSResult(false, toll);
+            else if (name == start)
+                dCost = new DFSResult(true, costs.Min());
+            else
+                if (costs.Count == 0)
+                    dCost = new DFSResult(false, 0);
+                else
+                    dCost = new DFSResult(true, toll + costs.Min());
         }
 
         public void Reset()
         {
-            toll = 0;
+            dCost = new DFSResult(false, 0);
             visited = false;
             pre = 0;
             post = 0;
         }
 
-        public static bool operator <(City c1, City c2)
+        public int CompareTo(object obj)
         {
-            if (c1.post < c2.post)
-                return true;
-            else
-                return false;
-        }
-
-        public static bool operator >(City c1, City c2)
-        {
-            if (c1.post > c2.post)
-                return true;
-            else
-                return false;
+            City other = (City)obj;
+            if (this.post < other.post)
+                return -1;
+            else if (this.post > other.post)
+                return 1;
+            return 0;
         }
     }
 
@@ -154,6 +197,8 @@ namespace AutoSink
         public void Reset()
         {
             vNum = 0;
+            foreach (KeyValuePair<string, City> c in cities)
+                c.Value.Reset();
         }
     }
 
@@ -166,6 +211,14 @@ namespace AutoSink
         {
             hasRoute = _hasRoute;
             cost = _cost;
+        }
+
+        public override string ToString()
+        {
+            if (hasRoute)
+                return "" + cost;
+            else
+                return "NO";
         }
     }
 }
