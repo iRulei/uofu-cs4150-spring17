@@ -64,6 +64,7 @@ namespace Kattis5
                 }
                 lc++;
             }
+            Console.Read();
         }
     }
 
