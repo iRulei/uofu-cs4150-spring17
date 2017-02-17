@@ -49,7 +49,7 @@ namespace Kattis5
                 {
                     og.friendsOf.Add(line, new List<string>());
                     og.toldBy.Add(line, null);
-                    og.dayTold.Add(line, Int32.MaxValue);
+                    og.dayTold.Add(line, -1);
                 }
                 else if ((sCount + 1) < lc && lc < (sCount + fCount + 2))
                 {
@@ -84,13 +84,14 @@ namespace Kattis5
 
         public void Spread(string start)
         {
+            dayTold[start] = 0;
             fQ.Enqueue(start);
             while (fQ.Count > 0)
             {
                 string kid = fQ.Dequeue();
                 foreach(string friend in friendsOf[kid])
                 {
-                    if(dayTold[friend] == Int32.MaxValue)
+                    if(dayTold[friend] == -1)
                     {
                         fQ.Enqueue(friend);
                         dayTold[friend] = dayTold[kid] + 1;
@@ -99,6 +100,7 @@ namespace Kattis5
                 }
             }
 
+            List<string> soLonely = new List<string>();
             Dictionary<int, List<string>> d2k = new Dictionary<int, List<string>>();
             for(int i = 0; i <= dayTold.Values.Max(); i++)
             {
@@ -106,7 +108,10 @@ namespace Kattis5
             }
             foreach(KeyValuePair<string, int> kvp in dayTold)
             {
-                d2k[kvp.Value].Add(kvp.Key);
+                if (kvp.Value >= 0)
+                    d2k[kvp.Value].Add(kvp.Key);
+                else
+                    soLonely.Add(kvp.Key);
             }
 
             StringBuilder report = new StringBuilder();
@@ -117,6 +122,11 @@ namespace Kattis5
                 {
                     report.Append(s + " ");
                 }
+            }
+            soLonely.Sort();
+            foreach(string s in soLonely)
+            {
+                report.Append(s + " ");
             }
 
             report.Remove(report.Length - 1, 1);
