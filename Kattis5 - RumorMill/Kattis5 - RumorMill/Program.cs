@@ -89,7 +89,7 @@ namespace Kattis5
             {
                 foreach(string kid in friendsOf[fQ.Dequeue()])
                 {
-
+                    fQ.Enqueue(kid);
                 }
             }
         }
