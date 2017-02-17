@@ -82,9 +82,7 @@ namespace Kattis5
 
         public void Spread(string start)
         {
-            int day = 0;
             fQ.Enqueue(start);
-
             while (fQ.Count > 0)
             {
                 string kid = fQ.Dequeue();
@@ -97,6 +95,14 @@ namespace Kattis5
                         toldBy[friend] = kid;
                     }
                 }
+            }
+
+            Dictionary<int, SortedList<>>
+            int daysGoneBy = dayTold.Values.Max();
+            StringBuilder report = new StringBuilder();
+            for (int i = 0; i < (daysGoneBy + 1); i++)
+            {
+
             }
         }
     }
