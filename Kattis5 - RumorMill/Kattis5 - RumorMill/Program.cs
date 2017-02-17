@@ -5,21 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RumorMill
+namespace Kattis5
 {
-    class RumorMill
+    class Program
     {
         static void Main(string[] args)
         {
             // graph
-
+            RumorMill og = new RumorMill();
+            RumorMill g = new RumorMill();
 
             // file reading
             int sCount = -1;
             int fCount = -1;
             int rCount = -1;
             int lc = 0;
-            string[] lArray;
             //string line;
             //while ((line = Console.ReadLine()) != null)
             foreach (string line in File.ReadAllLines("k5test1.txt"))
@@ -47,35 +47,43 @@ namespace RumorMill
                 // load that information into a graph
                 if (0 < lc && lc < (sCount + 1))
                 {
-
+                    og.friendsOf.Add(line, new List<string>());
+                    og.toldBy.Add(line, null);
+                    og.dayTold.Add(line, Int32.MaxValue);
                 }
                 else if ((sCount + 1) < lc && lc < (sCount + fCount + 2))
                 {
-
+                    string[] pair = line.Split(' ');
+                    og.friendsOf[pair[0]].Add(pair[1]);
                 }
                 else if ((sCount + fCount + 2) < lc)
                 {
-
+                    g = og;
+                    g.Spread(line);
                 }
             }
         }
     }
 
-    class ClassGraph
+    class RumorMill
     {
-        Dictionary<string, string> prev;
-        Dictionary<string, bool> visited;
+        public Dictionary<string, List<string>> friendsOf;
+        public Dictionary<string, string> toldBy;
+        public Dictionary<string, int> dayTold;
+        public Queue<string> fQ; 
 
-        public ClassGraph()
+        public RumorMill()
         {
-            prev = new Dictionary<string, string>();
-            visited = new Dictionary<string, bool>();
+            toldBy = new Dictionary<string, string>();
+            dayTold = new Dictionary<string, int>();
+            friendsOf = new Dictionary<string, List<string>>();
+            fQ = new Queue<string>();
         }
 
-        public void ResetGraph()
+        public Spread(string start)
         {
-            prev = new Dictionary<string, string>();
-            visited = new Dictionary<string, bool>();
+            int day = 0;
+
         }
     }
 }
