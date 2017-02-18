@@ -13,7 +13,6 @@ namespace Kattis5
         {
             // graph
             RumorMill og = new RumorMill();
-            RumorMill g = new RumorMill();
 
             // file reading
             int sCount = -1;
@@ -59,8 +58,8 @@ namespace Kattis5
                 }
                 else if ((sCount + fCount + 2) < lc)
                 {
-                    g = og;
-                    g.Spread(line);
+                    og.Reset();
+                    og.Spread(line);
                 }
                 lc++;
             }
@@ -104,34 +103,36 @@ namespace Kattis5
             List<string> soLonely = new List<string>();
             Dictionary<int, List<string>> d2k = new Dictionary<int, List<string>>();
             for(int i = 0; i <= dayTold.Values.Max(); i++)
-            {
                 d2k.Add(i, new List<string>());
-            }
             foreach(KeyValuePair<string, int> kvp in dayTold)
-            {
                 if (kvp.Value >= 0)
                     d2k[kvp.Value].Add(kvp.Key);
                 else
                     soLonely.Add(kvp.Key);
-            }
 
             StringBuilder report = new StringBuilder();
             foreach(List<string> l in d2k.Values)
             {
                 l.Sort();
                 foreach(string s in l)
-                {
                     report.Append(s + " ");
-                }
             }
             soLonely.Sort();
             foreach(string s in soLonely)
-            {
                 report.Append(s + " ");
-            }
 
             report.Remove(report.Length - 1, 1);
             Console.Out.WriteLine(report.ToString());
+        }
+
+        public void Reset()
+        {
+            foreach(string s in friendsOf.Keys)
+            {
+                toldBy[s] = "";
+                dayTold[s] = -1;
+            }
+            fQ.Clear();
         }
     }
 }
