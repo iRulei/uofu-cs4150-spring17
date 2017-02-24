@@ -15,15 +15,18 @@ namespace GetShorty
 
             //string line = "";
             //while ((line = Console.ReadLine()) != null)
-            string[] lines = File.ReadAllLines("k6test1.txt");
-            for(int i = 0; i < lines.Count(); i++)
+
+            //string[] lines = File.ReadAllLines("k6test1.txt");
+            //for(int i = 0; i < lines.Count(); i++)
+
+            foreach(string input in File.ReadLines("k6test1.txt"))
             {
-                string[] thisLine = lines[i].Split();
-                if (thisLine.Count() == 2)
-                    dungeons.Add(new Dungeon(Int32.Parse(thisLine[0]), Int32.Parse(thisLine[1])));                    
+                string[] line = input.Split();
+                if (line.Count() == 2)
+                    dungeons.Add(new Dungeon(Int32.Parse(line[0]), Int32.Parse(line[1])));                    
                 else
                 {
-                    dungeons.Last.rooms.
+                    dungeons.Last().AddHall(line[0], line[1], float.Parse(line[2]));
                 }
             }
 
@@ -34,22 +37,28 @@ namespace GetShorty
 
     public class Dungeon
     {
-        public Dictionary<string, List<string>> halls;
+        public Dictionary<string, List<Hall>> halls;
 
         public Dungeon(int _rc, int _hc)
         {
-            halls = new Dictionary<string, List<string>>();
+            halls = new Dictionary<string, List<Hall>>();
+        }
+
+        public void AddHall(string _r1, string _r2, float _fac)
+        {
+            halls[_r1].Add(new Hall(_r2, _fac));
+            halls[_r2].Add(new Hall(_r1, _fac));
         }
 
         public class Hall
         {
             public string end;
-            public int    wgt;
+            public float  fac;
 
-            public Hall(string _end, int _wgt)
+            public Hall(string _end, float _fac)
             {
                 end = _end;
-                wgt = _wgt;
+                fac = _fac;
             }
         }
     }
