@@ -34,13 +34,19 @@ namespace GetShorty
     public class Dungeon
     {
         public Dictionary<string, List<Hall>> halls;
+        public Dictionary<string, string> prev;
+        public Dictionary<string, float> factor;
+        //public ;  // YOU NEED TO IMPLEMENT A BINARY-HEAP-BASED PQ
 
         public Dungeon(int _rc, int _hc)
         {
             halls = new Dictionary<string, List<Hall>>();
         }
 
-        public void Explore() { }
+        public void Escape()
+        {
+
+        }
 
         public void AddHall(string _r1, string _r2, float _fac)
         {
@@ -58,6 +64,11 @@ namespace GetShorty
                 end = _end;
                 fac = _fac;
             }
+        }
+
+        public class DungeonQueue
+        {
+
         }
     }
 }
