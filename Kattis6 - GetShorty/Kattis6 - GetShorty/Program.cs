@@ -13,24 +13,20 @@ namespace GetShorty
         {
             List<Dungeon> dungeons = new List<Dungeon>();
 
-            //string line = "";
-            //while ((line = Console.ReadLine()) != null)
+            //string input = "";
+            //while ((input = Console.ReadLine()) != null)
 
-            //string[] lines = File.ReadAllLines("k6test1.txt");
-            //for(int i = 0; i < lines.Count(); i++)
-
+            // process input
             foreach(string input in File.ReadLines("k6test1.txt"))
             {
                 string[] line = input.Split();
                 if (line.Count() == 2)
                     dungeons.Add(new Dungeon(Int32.Parse(line[0]), Int32.Parse(line[1])));                    
                 else
-                {
                     dungeons.Last().AddHall(line[0], line[1], float.Parse(line[2]));
-                }
             }
 
-            // process each test case
+            // process dungeons
 
         }
     }
@@ -43,6 +39,8 @@ namespace GetShorty
         {
             halls = new Dictionary<string, List<Hall>>();
         }
+
+        public void Explore() { }
 
         public void AddHall(string _r1, string _r2, float _fac)
         {
